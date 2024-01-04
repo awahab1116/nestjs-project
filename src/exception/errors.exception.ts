@@ -14,3 +14,12 @@ export class LoginPasswordInvalidException extends HttpException {
     );
   }
 }
+
+export class productIdsInvalidException extends HttpException {
+  constructor(message?: string, statusCode?: number) {
+    super(
+      message || 'Cannot place order,product not found',
+      statusCode || HttpStatus.NOT_FOUND,
+    );
+  }
+}

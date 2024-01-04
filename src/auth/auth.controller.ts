@@ -1,7 +1,8 @@
 import { Controller, Get, Post, Body, Request } from '@nestjs/common';
 import { LoginService } from './login/login.service';
-import { LoginUserDto } from './dto/login-user.dto';
 import { RegisterService } from './register/register.service';
+import { UserProfileService } from './user-profile/user-profile.service';
+import { LoginUserDto } from './dto/login-user.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { Public } from '../constant/customdecorator';
 
@@ -10,6 +11,7 @@ export class AuthController {
   constructor(
     private readonly loginService: LoginService,
     private readonly registerService: RegisterService,
+    private readonly userProfileService: UserProfileService,
   ) {}
 
   @Public()
@@ -27,6 +29,6 @@ export class AuthController {
 
   @Get('profile')
   getProfile(@Request() req) {
-    return req.user;
+    return this.userProfileService.userProfile(req.user.id);
   }
 }

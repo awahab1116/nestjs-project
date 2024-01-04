@@ -9,7 +9,9 @@ import { AuthModule } from './auth/auth.module';
 import { User } from './entity/user.entity';
 import { ProductModule } from './product/product.module';
 import { Product } from './entity/product.entity';
+import { Order } from './entity/order.entity';
 import { APP_GUARD } from '@nestjs/core';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -20,12 +22,11 @@ import { APP_GUARD } from '@nestjs/core';
       port: parseInt(process.env.NODE_DB_PORT),
       password: process.env.NODE_DB_PASSWORD,
       username: process.env.NODE_DB_USERNAME,
-      entities: [User, Product],
+      entities: [User, Product, Order],
       database: process.env.NODE_DB_NAME,
       synchronize: true,
       logging: true,
     }),
-
     AuthModule,
     ProductModule,
     JwtModule.register({
@@ -33,6 +34,7 @@ import { APP_GUARD } from '@nestjs/core';
       secret: process.env.TOKEN_SECRET,
       signOptions: { expiresIn: '1d' },
     }),
+    OrderModule,
     // UserModule,
   ],
   controllers: [AppController],

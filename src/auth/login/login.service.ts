@@ -40,7 +40,7 @@ export class LoginService {
       throw new LoginPasswordInvalidException('Provided password not correct');
     }
     const { password, ...result } = user;
-    const payload = { sub: user.id, email: user.email };
+    const payload = { id: user.id, email: user.email };
     const access_token = await this.jwtService.signAsync(payload);
 
     return {

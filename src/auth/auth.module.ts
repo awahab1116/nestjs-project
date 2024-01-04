@@ -4,12 +4,13 @@ import { LogoutService } from './logout/logout.service';
 import { RegisterService } from './register/register.service';
 import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { JwtModule } from '@nestjs/jwt';
 import { User } from '../entity/user.entity';
+import { UserProfileService } from './user-profile/user-profile.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
-  providers: [LoginService, LogoutService, RegisterService],
+  providers: [LoginService, LogoutService, RegisterService, UserProfileService],
   controllers: [AuthController],
+  exports: [UserProfileService],
 })
 export class AuthModule {}
