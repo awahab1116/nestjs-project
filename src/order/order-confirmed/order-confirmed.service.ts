@@ -20,11 +20,11 @@ export class OrderConfirmedService {
       .execute();
 
     if (updatedOrder.affected) {
-      return this.orderRepository.findOne({
-        where: {
-          id: processedOrder.id,
-        },
-      });
+      return this.orderRepository
+        .createQueryBuilder('order')
+        .leftJoinAndSelect('order.user', 'user')
+        .where('order.id = :orderId', { orderId: processedOrder.id })
+        .getOne();
     }
 
     return processedOrder;

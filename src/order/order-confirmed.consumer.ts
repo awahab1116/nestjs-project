@@ -20,7 +20,6 @@ export class OrderConfirmedConsumer {
 
   @OnQueueCompleted()
   onComplete(job: Job, result: Order) {
-    // console.log('job is now completed ', result);
     this.socketService.orderStatusMessage(result);
     // this.appService.orderconfirmedCallback(result);
   }
