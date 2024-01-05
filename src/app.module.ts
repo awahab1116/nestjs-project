@@ -35,7 +35,7 @@ import { OrderModule } from './order/order.module';
       signOptions: { expiresIn: '1d' },
     }),
     OrderModule,
-    // UserModule,
+    // GatewayModule,
   ],
   controllers: [AppController],
   providers: [
@@ -45,5 +45,6 @@ import { OrderModule } from './order/order.module';
       useClass: AuthGuard,
     },
   ],
+  exports: [AppService],
 })
 export class AppModule {}
