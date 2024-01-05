@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Queue } from 'bull';
 import { Order } from '../../entity/order.entity';
 import { PlaceOrderDto } from '../dto/place-order.dto';
 import { UserReqData } from '../../interface/user-req-data/user-req-data.interface';
@@ -11,12 +12,16 @@ import {
   productIdsInvalidException,
   UserNotFoundException,
 } from '../../exception/errors.exception';
+import { InjectQueue } from '@nestjs/bull';
+import { ORDER_CONFIRMED_QUEUE } from '../../constant/customdecorator';
 
 @Injectable()
 export class PlaceOrderService {
   constructor(
     @InjectRepository(Order)
     private readonly orderRepository: Repository<Order>,
+    @InjectQueue(ORDER_CONFIRMED_QUEUE)
+    private readonly orderConfirmedQueue: Queue,
     private readonly viewProductService: ViewProductService,
     private readonly userProfileService: UserProfileService,
   ) {}
@@ -24,7 +29,7 @@ export class PlaceOrderService {
   async placeOrder(
     user: UserReqData,
     placeOrderDto: PlaceOrderDto,
-  ): Promise<any> {
+  ): Promise<Order> {
     const userProfile = await this.userProfileService.userProfile(user.id);
 
     if (!userProfile) {
@@ -46,6 +51,15 @@ export class PlaceOrderService {
     order.status = OrderStatus.PROCESSING;
     order.createdAt = new Date();
     order.updatedAt = new Date();
-    return this.orderRepository.save(order);
+
+    let orderPlaced = await this.orderRepository.save(order);
+    await this.orderConfirmedQueue.add(
+      {
+        orderPlaced,
+      },
+      { delay: 15000 }, // 3 seconds delayed
+    );
+
+    return orderPlaced;
   }
 }
