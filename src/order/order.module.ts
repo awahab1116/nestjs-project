@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PlaceOrderService } from './place-order/place-order.service';
 import { OrderController } from './order.controller';
@@ -10,9 +11,12 @@ import { ORDER_CONFIRMED_QUEUE } from '../constant/customdecorator';
 import { OrderConfirmedConsumer } from './order-confirmed.consumer';
 import { OrderConfirmedService } from './order-confirmed/order-confirmed.service';
 import { GatewayModule } from '../gateway/gateway.module';
+import { OrderPaymentService } from './order-payment/order-payment.service';
+import { StripeWebhookService } from './stripe-webhook/stripe-webhook.service';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forFeature([Order]),
     ProductModule,
     AuthModule,
@@ -27,7 +31,13 @@ import { GatewayModule } from '../gateway/gateway.module';
       name: ORDER_CONFIRMED_QUEUE,
     }),
   ],
-  providers: [PlaceOrderService, OrderConfirmedConsumer, OrderConfirmedService],
+  providers: [
+    PlaceOrderService,
+    OrderConfirmedConsumer,
+    OrderConfirmedService,
+    OrderPaymentService,
+    StripeWebhookService,
+  ],
   controllers: [OrderController],
 })
 export class OrderModule {}

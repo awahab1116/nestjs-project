@@ -7,6 +7,7 @@ import { PlaceOrderDto } from '../dto/place-order.dto';
 import { UserReqData } from '../../interface/user-req-data/user-req-data.interface';
 import { ViewProductService } from '../../product/view-product/view-product.service';
 import { UserProfileService } from '../../auth/user-profile/user-profile.service';
+import { OrderPaymentService } from '../order-payment/order-payment.service';
 import { OrderStatus } from '../../constant/order-status.enum';
 import {
   productIdsInvalidException,
@@ -24,12 +25,13 @@ export class PlaceOrderService {
     private readonly orderConfirmedQueue: Queue,
     private readonly viewProductService: ViewProductService,
     private readonly userProfileService: UserProfileService,
+    private readonly orderPaymentService: OrderPaymentService,
   ) {}
 
   async placeOrder(
     user: UserReqData,
     placeOrderDto: PlaceOrderDto,
-  ): Promise<Order> {
+  ): Promise<string> {
     const userProfile = await this.userProfileService.userProfile(user.id);
 
     if (!userProfile) {
@@ -44,22 +46,26 @@ export class PlaceOrderService {
       throw new productIdsInvalidException();
     }
 
+    let payment = await this.orderPaymentService.orderPayment();
+
     const order: Order = new Order();
     order.products = products;
     order.user = userProfile;
     order.totalAmount = 1000;
-    order.status = OrderStatus.PROCESSING;
+    order.status = OrderStatus.PAYMENT_PENDING;
+    order.checkoutSessionId = payment.id;
     order.createdAt = new Date();
     order.updatedAt = new Date();
 
     let orderPlaced = await this.orderRepository.save(order);
-    await this.orderConfirmedQueue.add(
-      {
-        orderPlaced,
-      },
-      { delay: 15000 }, // 3 seconds delayed
-    );
 
-    return orderPlaced;
+    // await this.orderConfirmedQueue.add(
+    //   {
+    //     orderPlaced,
+    //   },
+    //   { delay: 15000 }, // 3 seconds delayed
+    // );
+
+    return order ? payment.url : '';
   }
 }

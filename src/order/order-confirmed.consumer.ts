@@ -25,10 +25,10 @@ export class OrderConfirmedConsumer {
   }
 
   @Process()
-  async orderConfirmed(job: Job<{ orderPlaced: Order }>) {
+  async orderConfirmed(job: Job<{ updatedOrder: Order }>) {
     this.logger.log(JSON.stringify(job.data));
     let order = await this.orderconfirmedService.orderconfirmed(
-      job.data.orderPlaced,
+      job.data.updatedOrder,
     );
     return order;
     // await new Promise<void>((resolve) =>

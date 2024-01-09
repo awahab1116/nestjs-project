@@ -77,7 +77,7 @@ export class SocketService implements OnGatewayConnection, OnGatewayDisconnect {
 
   orderStatusMessage(order: Order) {
     const userClientId = this.connectedUsers.get(order.user.id);
-
+    this.logger.log(`Connected userId is ${userClientId}`);
     if (userClientId) {
       this.server.to(userClientId).emit('order-status-changed', { order });
     } else {

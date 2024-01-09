@@ -12,14 +12,15 @@ export class Order extends CommonEntity {
   @Column({
     type: 'enum',
     enum: OrderStatus,
-    default: OrderStatus.PENDING,
+    default: OrderStatus.INITIALIZED,
   })
   status: OrderStatus;
 
   @Column({
     nullable: true,
+    unique: true,
   })
-  paymentIntentId: string;
+  checkoutSessionId: string;
 
   @ManyToMany(() => Product, { eager: true, cascade: true })
   @JoinTable()
