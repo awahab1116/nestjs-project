@@ -5,7 +5,7 @@ import { InjectQueue } from '@nestjs/bull';
 import { ORDER_CONFIRMED_QUEUE } from '../../constant/customdecorator';
 import { Order } from '../../entity/order.entity';
 import { Repository } from 'typeorm';
-import { NotFoundException } from '@nestjs/common';
+import { OrderNotFound } from '../../exception/errors.exception';
 import { OrderStatus } from '../../constant/order-status.enum';
 
 @Injectable()
@@ -28,22 +28,19 @@ export class StripeWebhookService {
       });
 
       if (!order) {
-        throw new NotFoundException(
+        throw new OrderNotFound(
           `Order with checkoutSessionId ${checkoutSessionId} not found`,
         );
       }
 
-      // Update the status of the order
       order.status = OrderStatus.PAYMENT_PROCESSED;
-
-      // Save the updated order back to the database
       let updatedOrder = await this.orderRepository.save(order);
 
       await this.orderConfirmedQueue.add(
         {
           updatedOrder,
         },
-        { delay: 15000 }, // 3 seconds delayed
+        { delay: 15000 }, // 15 seconds delayed
       );
 
       console.log('Updated order is ', updatedOrder);

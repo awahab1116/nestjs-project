@@ -1,10 +1,9 @@
-import { Exclude } from 'class-transformer';
 import { Column, Entity } from 'typeorm';
 import { CommonEntity } from './common.entity';
 
 @Entity()
 export class Product extends CommonEntity {
-  @Column({ nullable: true })
+  @Column()
   name: string;
 
   @Column({ nullable: true })
@@ -13,6 +12,9 @@ export class Product extends CommonEntity {
   @Column('decimal', { precision: 10, scale: 2 })
   price: number;
 
-  @Column({ nullable: true, default: 1 })
+  @Column({ default: 1 })
   quantity: number;
+
+  @Column({ nullable: true })
+  image: string;
 }

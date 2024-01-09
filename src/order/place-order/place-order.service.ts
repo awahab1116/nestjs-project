@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Queue } from 'bull';
@@ -10,8 +10,9 @@ import { UserProfileService } from '../../auth/user-profile/user-profile.service
 import { OrderPaymentService } from '../order-payment/order-payment.service';
 import { OrderStatus } from '../../constant/order-status.enum';
 import {
-  productIdsInvalidException,
+  ProductIdsInvalidException,
   UserNotFoundException,
+  OrderNotPlacedException,
 } from '../../exception/errors.exception';
 import { InjectQueue } from '@nestjs/bull';
 import { ORDER_CONFIRMED_QUEUE } from '../../constant/customdecorator';
@@ -43,21 +44,25 @@ export class PlaceOrderService {
     );
 
     if (!products.length) {
-      throw new productIdsInvalidException();
+      throw new ProductIdsInvalidException();
     }
 
-    let payment = await this.orderPaymentService.orderPayment();
+    let payment = await this.orderPaymentService.orderPayment(products);
 
     const order: Order = new Order();
     order.products = products;
     order.user = userProfile;
-    order.totalAmount = 1000;
+    order.totalAmount = payment.amount_total / 100;
     order.status = OrderStatus.PAYMENT_PENDING;
     order.checkoutSessionId = payment.id;
     order.createdAt = new Date();
     order.updatedAt = new Date();
 
     let orderPlaced = await this.orderRepository.save(order);
+
+    if (!orderPlaced) {
+      throw new OrderNotPlacedException();
+    }
 
     // await this.orderConfirmedQueue.add(
     //   {
@@ -66,6 +71,6 @@ export class PlaceOrderService {
     //   { delay: 15000 }, // 3 seconds delayed
     // );
 
-    return order ? payment.url : '';
+    return payment.url;
   }
 }
