@@ -15,7 +15,9 @@ export class ViewProductService {
     return this.productRepository.find();
   }
 
-  async findProducts(productIds: number[]): Promise<Product[]> {
+  async findProducts(
+    productIds: number[],
+  ): Promise<{ result: Product[]; totalPriceSum: number }> {
     // const result = await this.productRepository
     //   .createQueryBuilder('product')
     //   .select('SUM(product.price)', 'sum')
@@ -33,10 +35,13 @@ export class ViewProductService {
       throw new ProductIdsInvalidException();
     }
 
-    // const totalPriceSum = result.reduce((sum, product) => {
-    //   return sum + +product.price;
-    // }, 0);
+    const totalPriceSum = result.reduce((sum, product) => {
+      return sum + +product.price;
+    }, 0);
 
-    return result;
+    return {
+      result,
+      totalPriceSum,
+    };
   }
 }

@@ -23,7 +23,8 @@ export class SocketService implements OnGatewayConnection, OnGatewayDisconnect {
   server: Server;
 
   async handleConnection(client: any, ...args: any[]) {
-    const authorizationHeader = client.handshake.headers.authorization;
+    const authorizationHeader =
+      client.handshake.headers.authorization || client.handshake.auth.token;
 
     if (!authorizationHeader) {
       this.logger.warn('Client disconnected due to missing token');

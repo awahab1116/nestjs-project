@@ -43,24 +43,29 @@ export class PlaceOrderService {
       placeOrderDto.productIds,
     );
 
-    if (!products.length) {
+    if (!products.result.length) {
       throw new ProductIdsInvalidException();
     }
 
-    let payment = await this.orderPaymentService.orderPayment(products);
-
     const order: Order = new Order();
-    order.products = products;
+    order.products = products.result;
     order.user = userProfile;
-    order.totalAmount = payment.amount_total / 100;
+    order.totalAmount = products.totalPriceSum;
     order.status = OrderStatus.PAYMENT_PENDING;
-    order.checkoutSessionId = payment.id;
     order.createdAt = new Date();
     order.updatedAt = new Date();
 
     let orderPlaced = await this.orderRepository.save(order);
 
-    if (!orderPlaced) {
+    let payment = await this.orderPaymentService.orderPayment(
+      products.result,
+      orderPlaced,
+    );
+    orderPlaced.checkoutSessionId = payment.id;
+
+    let updatedOrder = await this.orderRepository.save(orderPlaced);
+
+    if (!(updatedOrder && orderPlaced)) {
       throw new OrderNotPlacedException();
     }
 

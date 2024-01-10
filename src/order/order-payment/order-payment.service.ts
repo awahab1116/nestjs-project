@@ -5,6 +5,7 @@ const stripe = require('stripe')(
 import Stripe from 'stripe';
 // import { stripe } from '../../constant/stripe';
 import { Product } from '../../entity/product.entity';
+import { Order } from '../../entity/order.entity';
 
 @Injectable()
 export class OrderPaymentService {
@@ -26,7 +27,10 @@ export class OrderPaymentService {
     return lineItems;
   }
 
-  async orderPayment(products: Product[]): Promise<Stripe.Checkout.Session> {
+  async orderPayment(
+    products: Product[],
+    orderPlaced: Order,
+  ): Promise<Stripe.Checkout.Session> {
     const lineItems = await this.lineItemProducts(products);
     const session: Stripe.Checkout.Session =
       await stripe.checkout.sessions.create({
@@ -35,7 +39,7 @@ export class OrderPaymentService {
           capture_method: process.env.STRIPE_CAPTURE_METHOD,
         },
         mode: process.env.STRIPE_PAYMENT_MODE,
-        success_url: process.env.STRIPE_SUCCESS_URL,
+        success_url: `${process.env.STRIPE_SUCCESS_URL_FIRST_PART}/${orderPlaced.id}/${process.env.STRIPE_SUCCESS_URL_SECOND_PART}`,
         cancel_url: process.env.STRIPE_FAILURE_URL,
       });
     return session;

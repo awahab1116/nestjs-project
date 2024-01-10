@@ -13,6 +13,7 @@ import { OrderConfirmedService } from './order-confirmed/order-confirmed.service
 import { GatewayModule } from '../gateway/gateway.module';
 import { OrderPaymentService } from './order-payment/order-payment.service';
 import { StripeWebhookService } from './stripe-webhook/stripe-webhook.service';
+import { ViewOrderService } from './view-order/view-order.service';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { StripeWebhookService } from './stripe-webhook/stripe-webhook.service';
     OrderConfirmedService,
     OrderPaymentService,
     StripeWebhookService,
+    ViewOrderService,
   ],
   controllers: [OrderController],
 })
