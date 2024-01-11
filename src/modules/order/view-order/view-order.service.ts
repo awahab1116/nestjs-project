@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Order } from '../../entity/order.entity';
-import { OrderNotFound } from '../../exception/errors.exception';
+import { Order } from '../../../entity/order.entity';
+import { OrderNotFound } from '../../../exception/errors.exception';
 
 @Injectable()
 export class ViewOrderService {

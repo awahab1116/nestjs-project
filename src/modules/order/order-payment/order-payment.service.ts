@@ -4,8 +4,8 @@ const stripe = require('stripe')(
 );
 import Stripe from 'stripe';
 // import { stripe } from '../../constant/stripe';
-import { Product } from '../../entity/product.entity';
-import { Order } from '../../entity/order.entity';
+import { Product } from '../../../entity/product.entity';
+import { Order } from '../../../entity/order.entity';
 
 @Injectable()
 export class OrderPaymentService {

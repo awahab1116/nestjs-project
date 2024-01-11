@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../../entity/user.entity';
+import { User } from '../../../entity/user.entity';
 import { LoginUserDto } from '../dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
 
@@ -9,7 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import {
   LoginPasswordInvalidException,
   UserNotFoundException,
-} from '../../exception/errors.exception';
+} from '../../../exception/errors.exception';
 
 @Injectable()
 export class LoginService {

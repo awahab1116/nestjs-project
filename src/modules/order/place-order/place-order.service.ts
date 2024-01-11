@@ -2,20 +2,20 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Queue } from 'bull';
-import { Order } from '../../entity/order.entity';
+import { Order } from '../../../entity/order.entity';
 import { PlaceOrderDto } from '../dto/place-order.dto';
-import { UserReqData } from '../../interface/user-req-data/user-req-data.interface';
+import { UserReqData } from '../../../interface/user-req-data/user-req-data.interface';
 import { ViewProductService } from '../../product/view-product/view-product.service';
 import { UserProfileService } from '../../auth/user-profile/user-profile.service';
 import { OrderPaymentService } from '../order-payment/order-payment.service';
-import { OrderStatus } from '../../constant/order-status.enum';
+import { OrderStatus } from '../../../constant/order-status.enum';
 import {
   ProductIdsInvalidException,
   UserNotFoundException,
   OrderNotPlacedException,
-} from '../../exception/errors.exception';
+} from '../../../exception/errors.exception';
 import { InjectQueue } from '@nestjs/bull';
-import { ORDER_CONFIRMED_QUEUE } from '../../constant/customdecorator';
+import { ORDER_CONFIRMED_QUEUE } from '../../../constant/customdecorator';
 
 @Injectable()
 export class PlaceOrderService {

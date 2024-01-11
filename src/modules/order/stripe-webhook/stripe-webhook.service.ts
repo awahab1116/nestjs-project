@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Queue } from 'bull';
 import { InjectQueue } from '@nestjs/bull';
-import { ORDER_CONFIRMED_QUEUE } from '../../constant/customdecorator';
-import { Order } from '../../entity/order.entity';
+import { ORDER_CONFIRMED_QUEUE } from '../../../constant/customdecorator';
+import { Order } from '../../../entity/order.entity';
 import { Repository } from 'typeorm';
-import { OrderNotFound } from '../../exception/errors.exception';
-import { OrderStatus } from '../../constant/order-status.enum';
+import { OrderNotFound } from '../../../exception/errors.exception';
+import { OrderStatus } from '../../../constant/order-status.enum';
 
 @Injectable()
 export class StripeWebhookService {

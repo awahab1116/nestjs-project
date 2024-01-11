@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Order } from '../../entity/order.entity';
-import { OrderStatus } from '../../constant/order-status.enum';
+import { Order } from '../../../entity/order.entity';
+import { OrderStatus } from '../../../constant/order-status.enum';
 
 @Injectable()
 export class OrderConfirmedService {

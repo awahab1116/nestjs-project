@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Repository, In } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ProductIdsInvalidException } from '../../exception/errors.exception';
-import { Product } from '../../entity/product.entity';
+import { ProductIdsInvalidException } from '../../../exception/errors.exception';
+import { Product } from '../../../entity/product.entity';
 
 @Injectable()
 export class ViewProductService {

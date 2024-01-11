@@ -4,7 +4,7 @@ import { RegisterService } from './register/register.service';
 import { UserProfileService } from './user-profile/user-profile.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
-import { Public } from '../constant/customdecorator';
+import { Public } from '../../constant/customdecorator';
 
 @Controller('auth')
 export class AuthController {

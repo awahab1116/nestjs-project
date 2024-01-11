@@ -1,10 +1,10 @@
 import { Processor, Process, OnQueueCompleted } from '@nestjs/bull';
-import { ORDER_CONFIRMED_QUEUE } from '../constant/customdecorator';
+import { ORDER_CONFIRMED_QUEUE } from '../../constant/customdecorator';
 import { Job } from 'bull';
 import { Logger } from '@nestjs/common';
 import { OrderConfirmedService } from './order-confirmed/order-confirmed.service';
-import { SocketService } from '../gateway/gateway.service';
-import { Order } from '../entity/order.entity';
+import { SocketService } from '../../gateway/gateway.service';
+import { Order } from '../../entity/order.entity';
 
 @Processor(ORDER_CONFIRMED_QUEUE)
 export class OrderConfirmedConsumer {

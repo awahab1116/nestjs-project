@@ -5,13 +5,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthGuard } from './guard/auth.guard';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { User } from './entity/user.entity';
-import { ProductModule } from './product/product.module';
+import { ProductModule } from './modules/product/product.module';
 import { Product } from './entity/product.entity';
 import { Order } from './entity/order.entity';
 import { APP_GUARD } from '@nestjs/core';
-import { OrderModule } from './order/order.module';
+import { OrderModule } from './modules/order/order.module';
 
 @Module({
   imports: [

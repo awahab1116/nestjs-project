@@ -2,7 +2,7 @@ import { Controller, Post, Body, Request, Get, Param } from '@nestjs/common';
 import { PlaceOrderService } from './place-order/place-order.service';
 import { StripeWebhookService } from './stripe-webhook/stripe-webhook.service';
 import { PlaceOrderDto } from './dto/place-order.dto';
-import { Public } from '../constant/customdecorator';
+import { Public } from '../../constant/customdecorator';
 import { ViewOrderService } from './view-order/view-order.service';
 @Controller('order')
 export class OrderController {
