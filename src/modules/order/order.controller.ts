@@ -13,7 +13,7 @@ export class OrderController {
   ) {}
 
   @Post('place')
-  createProduct(@Request() req, @Body() placeOrderDto: PlaceOrderDto) {
+  createProduct(@Request() req, @Body() placeOrderDto: PlaceOrderDto[]) {
     return this.placeOrderService.placeOrder(req.user, placeOrderDto);
   }
 

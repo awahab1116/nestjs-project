@@ -20,7 +20,7 @@ export class OrderPaymentService {
           },
           unit_amount: Math.floor(product.price * 100) + '',
         },
-        quantity: 1,
+        quantity: product.quantity,
       };
     });
 

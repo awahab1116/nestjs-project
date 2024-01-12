@@ -24,6 +24,15 @@ export class ProductIdsInvalidException extends HttpException {
   }
 }
 
+export class ProductOutOfStockException extends HttpException {
+  constructor(message?: string, statusCode?: number) {
+    super(
+      message || 'Cannot place order,product is out of stock',
+      statusCode || HttpStatus.BAD_REQUEST,
+    );
+  }
+}
+
 export class OrderNotPlacedException extends HttpException {
   constructor(message?: string, statusCode?: number) {
     super(

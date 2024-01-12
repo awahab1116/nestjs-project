@@ -1,21 +1,10 @@
-import {
-  IsOptional,
-  IsInt,
-  IsArray,
-  ArrayNotEmpty,
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-  MinLength,
-  Min,
-} from 'class-validator';
+import { IsInt, IsPositive } from 'class-validator';
 
 export class PlaceOrderDto {
-  @IsArray()
-  @ArrayNotEmpty()
-  @IsInt({
-    each: true,
-    message: 'Each element in productIds must be an integer.',
-  })
-  productIds: number[];
+  @IsInt({ message: 'productId must be an integer.' })
+  productId: number;
+
+  @IsInt({ message: 'quantity must be an integer.' })
+  @IsPositive({ message: 'quantity must be a positive integer.' })
+  quantity: number;
 }

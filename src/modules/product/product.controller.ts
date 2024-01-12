@@ -19,4 +19,12 @@ export class ProductController {
   viewProducts() {
     return this.viewProductService.viewProduct();
   }
+
+  // @Get('find')
+  // findProducts() {
+  //   return this.viewProductService.findProductsToPlaceOrder([
+  //     { productId: 1, quantity: 2 },
+  //     { productId: 2, quantity: 1 },
+  //   ]);
+  // }
 }

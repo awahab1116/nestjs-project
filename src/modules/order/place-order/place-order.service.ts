@@ -31,7 +31,7 @@ export class PlaceOrderService {
 
   async placeOrder(
     user: UserReqData,
-    placeOrderDto: PlaceOrderDto,
+    placeOrderDto: PlaceOrderDto[],
   ): Promise<string> {
     const userProfile = await this.userProfileService.userProfile(user.id);
 
@@ -39,9 +39,8 @@ export class PlaceOrderService {
       throw new UserNotFoundException();
     }
 
-    const products = await this.viewProductService.findProducts(
-      placeOrderDto.productIds,
-    );
+    const products =
+      await this.viewProductService.findProductsToPlaceOrder(placeOrderDto);
 
     if (!products.result.length) {
       throw new ProductIdsInvalidException();
@@ -58,7 +57,7 @@ export class PlaceOrderService {
     let orderPlaced = await this.orderRepository.save(order);
 
     let payment = await this.orderPaymentService.orderPayment(
-      products.result,
+      products.allProductsAvailable,
       orderPlaced,
     );
     orderPlaced.checkoutSessionId = payment.id;
@@ -68,14 +67,6 @@ export class PlaceOrderService {
     if (!(updatedOrder && orderPlaced)) {
       throw new OrderNotPlacedException();
     }
-
-    // await this.orderConfirmedQueue.add(
-    //   {
-    //     orderPlaced,
-    //   },
-    //   { delay: 15000 }, // 3 seconds delayed
-    // );
-
     return payment.url;
   }
 }
