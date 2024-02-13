@@ -1,4 +1,11 @@
-import { Controller, Get, Post, Body, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Request,
+  ValidationPipe,
+} from '@nestjs/common';
 import { LoginService } from './login/login.service';
 import { RegisterService } from './register/register.service';
 import { UserProfileService } from './user-profile/user-profile.service';

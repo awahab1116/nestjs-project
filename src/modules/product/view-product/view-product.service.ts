@@ -28,11 +28,9 @@ export class ViewProductService {
   }> {
     const allProductsAvailable =
       await this.checkProductAvailability(productsData);
-    console.log('2');
     if (!allProductsAvailable.length) {
       throw new ProductOutOfStockException();
     }
-    console.log('3');
     const productsUpdated = await this.updateProductQuantity(productsData);
 
     if (!productsUpdated.length) {
@@ -89,7 +87,6 @@ export class ViewProductService {
     updateProductQuantity: productsData[],
   ): Promise<Product[]> {
     const promises = updateProductQuantity.map(async (obj) => {
-      console.log('4');
       const product = await this.productRepository.findOne({
         where: {
           id: obj.productId,
@@ -99,12 +96,9 @@ export class ViewProductService {
       if (!product) {
         throw new ProductIdsInvalidException();
       }
-      console.log('5');
       product.quantity -= obj.quantity;
 
       const updatedProductObj = await this.productRepository.save(product);
-      console.log('Product is ', updatedProductObj);
-      console.log('6');
       return updatedProductObj;
     });
 

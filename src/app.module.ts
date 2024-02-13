@@ -23,7 +23,10 @@ import { OrderModule } from './modules/order/order.module';
       password: process.env.NODE_DB_PASSWORD,
       username: process.env.NODE_DB_USERNAME,
       entities: [User, Product, Order],
-      database: process.env.NODE_DB_NAME,
+      database:
+        process.env.NODE_ENV === 'development'
+          ? process.env.NODE_DB_NAME
+          : process.env.NODE_DB_NAME_TEST,
       synchronize: true,
       logging: true,
     }),
