@@ -8,6 +8,9 @@ import { Repository } from 'typeorm';
 import { OrderNotFound } from '../../../exception/errors.exception';
 import { OrderStatus } from '../../../constant/order-status.enum';
 
+/**
+ * Service responsible for handling Stripe webhook events.
+ */
 @Injectable()
 export class StripeWebhookService {
   constructor(
@@ -17,7 +20,12 @@ export class StripeWebhookService {
     private readonly orderConfirmedQueue: Queue,
   ) {}
 
-  async stripeEvent(event: any) {
+  /**
+   * Handles the Stripe webhook event.
+   * @param event - The Stripe event object.
+   * @returns A boolean indicating the success of the operation.
+   */
+  async stripeEvent(event: any): Promise<boolean> {
     console.log('event is ', event);
     if (event.type === 'checkout.session.completed') {
       //update order and add the order to queue

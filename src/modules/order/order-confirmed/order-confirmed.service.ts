@@ -4,6 +4,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from '../../../entity/order.entity';
 import { OrderStatus } from '../../../constant/order-status.enum';
 
+/**
+ * Updates the status of a processed order to "COMPLETED" and returns the updated order.
+ * If the order is not successfully updated, the original processed order is returned.
+ * @param processedOrder - The processed order to update.
+ * @returns The updated order or the original processed order.
+ */
 @Injectable()
 export class OrderConfirmedService {
   constructor(

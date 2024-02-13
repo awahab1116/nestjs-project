@@ -6,11 +6,13 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
-//   import { jwtConstants } from './constants';
 import { Request } from 'express';
 import { UserReqData } from '../interface/user-req-data/user-req-data.interface';
 import { IS_PUBLIC_KEY } from '../constant/customdecorator';
 
+/**
+ * Guard that implements CanActivate interface to handle authentication and authorization logic.
+ */
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
@@ -18,6 +20,12 @@ export class AuthGuard implements CanActivate {
     private reflector: Reflector,
   ) {}
 
+  /**
+   * Determines if the route can be activated based on authentication and authorization rules.
+   * @param context - The execution context of the route.
+   * @returns A promise that resolves to a boolean indicating if the route can be activated.
+   * @throws UnauthorizedException if the route is not public and the user is not authenticated.
+   */
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
@@ -43,6 +51,11 @@ export class AuthGuard implements CanActivate {
     return true;
   }
 
+  /**
+   * Extracts the token from the authorization header of the request.
+   * @param request - The HTTP request object.
+   * @returns The extracted token or undefined if not found.
+   */
   private extractTokenFromHeader(request: Request): string | undefined {
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;

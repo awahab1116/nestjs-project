@@ -3,6 +3,9 @@ import { CreateProductService } from './create-product/create-product.service';
 import { ViewProductService } from './view-product/view-product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 
+/**
+ * Controller for managing product operations.
+ */
 @Controller('product')
 export class ProductController {
   constructor(
@@ -10,21 +13,22 @@ export class ProductController {
     private readonly viewProductService: ViewProductService,
   ) {}
 
+  /**
+   * Endpoint for creating a new product.
+   * @param createProductDto - The DTO containing the product details.
+   * @returns The created product.
+   */
   @Post('create')
   createProduct(@Body() createProductDto: CreateProductDto) {
     return this.createProductService.createProduct(createProductDto);
   }
 
+  /**
+   * Endpoint for viewing all products.
+   * @returns The list of products.
+   */
   @Get('view')
   viewProducts() {
     return this.viewProductService.viewProduct();
   }
-
-  // @Get('find')
-  // findProducts() {
-  //   return this.viewProductService.findProductsToPlaceOrder([
-  //     { productId: 1, quantity: 2 },
-  //     { productId: 2, quantity: 1 },
-  //   ]);
-  // }
 }

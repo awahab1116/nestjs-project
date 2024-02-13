@@ -10,32 +10,43 @@ import {
   MinLength,
 } from 'class-validator';
 
-//   const passwordRegEx =
-//     /^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,20}$/;
-
+/**
+ * Data transfer object for registering a user.
+ */
 export class RegisterUserDto {
+  /**
+   * The first name of the user.
+   * @minimumLength 2
+   */
   @IsString()
   @IsOptional()
   @MinLength(2, { message: 'Firstname must have atleast 2 characters.' })
   firstName: string;
 
+  /**
+   * The last name of the user.
+   * @minimumLength 2
+   */
   @IsString()
   @IsOptional()
   @MinLength(2, { message: 'Lastname must have atleast 2 characters.' })
   lastName: string;
 
+  /**
+   * The email address of the user.
+   * @isNotEmpty
+   * @isEmail
+   */
   @IsNotEmpty()
   @IsEmail(undefined, { message: 'Please provide valid Email.' })
   email: string;
 
+  /**
+   * The password of the user.
+   * @isNotEmpty
+   * @minimumLength 6
+   */
   @IsNotEmpty()
   @MinLength(6, { message: 'Password should have minimum 6 characters' })
   password: string;
-  // @Matches(passwordRegEx, {
-  //   message: `Password must contain Minimum 8 and maximum 20 characters,
-  //   at least one uppercase letter,
-  //   one lowercase letter,
-  //   one number and
-  //   one special character`,
-  // })
 }

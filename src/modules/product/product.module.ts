@@ -5,6 +5,9 @@ import { ViewProductService } from './view-product/view-product.service';
 import { ProductController } from './product.controller';
 import { Product } from '../../entity/product.entity';
 
+/**
+ * Module for managing products.
+ */
 @Module({
   imports: [TypeOrmModule.forFeature([Product])],
   providers: [CreateProductService, ViewProductService],

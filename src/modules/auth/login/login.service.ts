@@ -1,3 +1,6 @@
+/**
+ * Service responsible for handling user login functionality.
+ */
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -18,6 +21,13 @@ export class LoginService {
     private jwtService: JwtService,
   ) {}
 
+  /**
+   * Authenticates a user by comparing the provided email and password with the stored user credentials.
+   * @param loginUserDto - The DTO containing the email and password of the user.
+   * @returns An object containing the user details and an access token upon successful authentication.
+   * @throws UserNotFoundException if the user with the provided email does not exist.
+   * @throws LoginPasswordInvalidException if the provided password is incorrect.
+   */
   async loginUser(loginUserDto: LoginUserDto): Promise<any> {
     const user = await this.userRepository.findOne({
       where: {
@@ -27,8 +37,6 @@ export class LoginService {
 
     if (!user) {
       throw new UserNotFoundException();
-      // 'User not found,email invalid',
-      // HttpStatus.NOT_FOUND,
     }
 
     const isPasswordMatched = await bcrypt.compare(
@@ -48,16 +56,4 @@ export class LoginService {
       access_token,
     };
   }
-
-  //   registerUser(registerUserDto: RegisterUserDto): Promise<User> {
-  //     console.log('In service');
-  //     const user: User = new User();
-  //     user.firstName = registerUserDto.firstName;
-  //     user.lastName = registerUserDto.lastName;
-  //     user.email = registerUserDto.email;
-  //     user.password = registerUserDto.password;
-  //     user.createdAt = new Date();
-  //     user.updatedAt = new Date();
-  //     return this.userRepository.save(user);
-  //   }
 }

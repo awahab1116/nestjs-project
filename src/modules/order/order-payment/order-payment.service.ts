@@ -9,6 +9,11 @@ import { Order } from '../../../entity/order.entity';
 
 @Injectable()
 export class OrderPaymentService {
+  /**
+   * Generates line items for the given products.
+   * @param products - The array of products.
+   * @returns The array of line items.
+   */
   async lineItemProducts(products: Product[]) {
     const lineItems = products.map((product) => {
       return {
@@ -27,6 +32,12 @@ export class OrderPaymentService {
     return lineItems;
   }
 
+  /**
+   * Creates a Stripe checkout session for the given products and order.
+   * @param products - The array of products.
+   * @param orderPlaced - The order object.
+   * @returns The created Stripe checkout session.
+   */
   async orderPayment(
     products: Product[],
     orderPlaced: Order,

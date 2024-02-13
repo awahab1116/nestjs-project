@@ -15,6 +15,10 @@ import { OrderPaymentService } from './order-payment/order-payment.service';
 import { StripeWebhookService } from './stripe-webhook/stripe-webhook.service';
 import { ViewOrderService } from './view-order/view-order.service';
 
+/**
+ * Represents the Order module of the e-commerce backend.
+ * This module is responsible for handling orders and related functionality.
+ */
 @Module({
   imports: [
     ConfigModule.forRoot(),

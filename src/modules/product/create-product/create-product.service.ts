@@ -4,6 +4,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from '../../../entity/product.entity';
 import { CreateProductDto } from '../dto/create-product.dto';
 
+/**
+ * Creates a new product.
+ * @param createProductDto - The data for creating the product.
+ * @returns The created product.
+ */
 @Injectable()
 export class CreateProductService {
   constructor(

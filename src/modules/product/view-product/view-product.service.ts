@@ -14,6 +14,9 @@ interface productsData {
   quantity: number;
 }
 
+/**
+ * Service responsible for viewing and managing products.
+ */
 @Injectable()
 export class ViewProductService {
   constructor(
@@ -21,6 +24,13 @@ export class ViewProductService {
     private readonly productRepository: Repository<Product>,
   ) {}
 
+  /**
+   * Finds products to place an order based on the provided data.
+   * @param productsData - The data containing the product IDs and quantities.
+   * @returns An object containing the result products, total price sum, and all available products.
+   * @throws {ProductOutOfStockException} - If any of the requested products are out of stock.
+   * @throws {OrderNotPlacedException} - If the order cannot be placed due to some error.
+   */
   async findProductsToPlaceOrder(productsData: PlaceOrderDto[]): Promise<{
     result: Product[];
     totalPriceSum: number;
@@ -48,6 +58,13 @@ export class ViewProductService {
     };
   }
 
+  /**
+   * Checks the availability of the requested products.
+   * @param productsData - The data containing the product IDs and quantities.
+   * @returns An array of available products.
+   * @throws {ProductIdsInvalidException} - If any of the requested product IDs are invalid.
+   * @throws {ProductOutOfStockException} - If any of the requested products are out of stock.
+   */
   async checkProductAvailability(
     productsData: productsData[],
   ): Promise<Product[]> {
@@ -83,6 +100,12 @@ export class ViewProductService {
     return obj;
   }
 
+  /**
+   * Updates the quantity of the requested products.
+   * @param updateProductQuantity - The data containing the product IDs and quantities to be updated.
+   * @returns An array of updated products.
+   * @throws {ProductIdsInvalidException} - If any of the requested product IDs are invalid.
+   */
   async updateProductQuantity(
     updateProductQuantity: productsData[],
   ): Promise<Product[]> {
@@ -107,6 +130,10 @@ export class ViewProductService {
     return updatedProducts;
   }
 
+  /**
+   * Retrieves all products.
+   * @returns An array of products.
+   */
   async viewProduct(): Promise<Product[]> {
     return this.productRepository.find();
   }

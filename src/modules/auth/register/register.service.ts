@@ -1,3 +1,6 @@
+/**
+ * Service responsible for registering a new user.
+ */
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,6 +14,11 @@ export class RegisterService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
+  /**
+   * Registers a new user with the provided user data.
+   * @param registerUserDto - The DTO containing the user data.
+   * @returns The newly created user.
+   */
   async registerUser(registerUserDto: RegisterUserDto): Promise<User> {
     const salt = await bcrypt.genSalt();
     console.log('Salt is ', salt);

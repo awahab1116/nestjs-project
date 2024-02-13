@@ -6,24 +6,40 @@ import { OrderConfirmedService } from './order-confirmed/order-confirmed.service
 import { SocketService } from '../../gateway/gateway.service';
 import { Order } from '../../entity/order.entity';
 
+/**
+ * Consumer class for processing order confirmed messages.
+ */
 @Processor(ORDER_CONFIRMED_QUEUE)
 export class OrderConfirmedConsumer {
   private readonly logger = new Logger(OrderConfirmedConsumer.name);
+
+  /**
+   * Constructs a new instance of the OrderConfirmedConsumer class.
+   * @param orderconfirmedService - The service for handling order confirmed logic.
+   * @param socketService - The service for handling socket communication.
+   */
   constructor(
     private readonly orderconfirmedService: OrderConfirmedService,
     private readonly socketService: SocketService,
   ) {}
 
-  // onModuleInit() {
-  //   this.logger.log('OrderConfirmedConsumer initialized');
-  // }
-
+  /**
+   * Event handler for when a queue job is completed.
+   * Sends an order status message to the socket service.
+   * @param job - The completed job.
+   * @param result - The result of the completed job.
+   */
   @OnQueueCompleted()
   onComplete(job: Job, result: Order) {
     this.socketService.orderStatusMessage(result);
-    // this.appService.orderconfirmedCallback(result);
   }
 
+  /**
+   * Process function for handling order confirmed jobs.
+   * Logs the job data and calls the order confirmed service.
+   * @param job - The job containing the updated order data.
+   * @returns The updated order.
+   */
   @Process()
   async orderConfirmed(job: Job<{ updatedOrder: Order }>) {
     this.logger.log(JSON.stringify(job.data));
@@ -31,17 +47,5 @@ export class OrderConfirmedConsumer {
       job.data.updatedOrder,
     );
     return order;
-    // await new Promise<void>((resolve) =>
-    //   setTimeout(() => {
-    //     this.logger.log(`Job id is ${job.id}`);
-    //     if (job.data.callbackfunc) {
-    //       job.data.callbackfunc();
-    //     } else {
-    //     }
-
-    //     resolve();
-    //   }, 15000),
-    // );
-    // Your job processing logic here
   }
 }
